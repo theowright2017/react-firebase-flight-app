@@ -1,7 +1,11 @@
 import React, {Component} from 'react'
 import Hero from '../Components/Hero';
 import Banner from '../Components/Banner';
-import {Link} from 'react-router-dom'
+
+import {Link} from 'react-router-dom';
+
+import SelectOption from '../Components/SelectOption';
+import RenderFlight from '../Components/RenderFlight';
 
 
 let firebase = require('firebase');
@@ -25,6 +29,16 @@ class Search extends Component {
   constructor(props) {
     super(props);
 
+    this.depairRef = React.createRef()
+    this.destairRef = React.createRef()
+    this.depdayRef = React.createRef()
+    this.depmonthRef = React.createRef()
+    this.depyearRef = React.createRef()
+    this.retdayRef = React.createRef()
+    this.retmonthRef = React.createRef()
+    this.retyearRef = React.createRef()
+
+
     this.state = {
       isLoaded: false,
       flights: [],
@@ -42,7 +56,9 @@ class Search extends Component {
         year: []
       },
 
-      flight: null
+      matchingFlights: [],
+      renderFlight: false
+
     }
   }
 
@@ -72,11 +88,11 @@ class Search extends Component {
 
     this.getAllUniqueDates()
 
-
-
     this.setState({
       isLoaded: true
     })
+
+
   }
   }
 
@@ -227,24 +243,26 @@ class Search extends Component {
 
   searchFlights = (e) => {
     e.preventDefault()
+    console.log("now");
 
     const flights = this.state.flights
 
     let inputFlight = {
-      departureAirport:    this.refs.departure_airport.value,
-      destinationAirport:  this.refs.destination_airport.value,
-      departureDay:        this.refs.departure_day.value,
-      departureMonth:      this.refs.departure_month.value,
-      departureYear:       this.refs.departure_year.value,
-      returnDay:           this.refs.return_day.value,
-      returnMonth:         this.refs.return_month.value,
-      returnYear:          this.refs.return_year.value
+      departureAirport:    this.depairRef.current.value,
+      destinationAirport:  this.destairRef.current.value,
+      departureDay:        this.depdayRef.current.value,
+      departureMonth:      this.depmonthRef.current.value,
+      departureYear:       this.depyearRef.current.value,
+      returnDay:           this.retdayRef.current.value,
+      returnMonth:         this.retmonthRef.current.value,
+      returnYear:          this.retyearRef.current.value
     }
+    console.log(inputFlight);
 
 
     //convert date back to database date match
-    let depmonth = this.refs.departure_month.value;
-    let retmonth = this.refs.return_month.value;
+    let depmonth = this.depmonthRef.current.value;
+    let retmonth = this.retmonthRef.current.value;
     let numericalDepMonth = "";
     let numericalRetMonth = "";
 
@@ -300,31 +318,60 @@ class Search extends Component {
             break;
     }
 
-    let newDepartureDate = this.refs.departure_year.value + "-" +
+    let newDepartureDate = this.depyearRef.current.value + "-" +
                            numericalDepMonth + "-" +
-                           this.refs.departure_day.value
-    let newReturnDate = this.refs.return_year.value + "-" +
+                           this.depdayRef.current.value
+    let newReturnDate = this.retyearRef.current.value + "-" +
                            numericalRetMonth + "-" +
-                           this.refs.return_day.value
+                           this.retdayRef.current.value
     // end of date conversion
 
-    let matchingFlights = []
+    let matchingFlightsArray = []
 
     flights.forEach((flight) => {
       if ( inputFlight.departureAirport === flight.depair &&
            inputFlight.destinationAirport === flight.destair) {
-        matchingFlights.push(flight)
+        matchingFlightsArray.push(flight)
       }
       })
 
-    console.log(matchingFlights);
+
+    this.setState({
+      matchingFlights: matchingFlightsArray
+    }, () => {
+      console.log(this.state.matchingFlights);
+
+      this.passPropsToResultAndRedirect()
+
+      this.renderFlights()
+    })
+
+
+
+
 
   // TODO render matching flight , expand match criteria
 
-
-
-
   }
+
+  renderFlights = () => {
+    this.setState({
+      renderFlight: true
+    })
+  }
+
+  passPropsToResultAndRedirect = () => {
+    this.props.history.push({
+      pathname: "/results",
+      state: {
+        matched: this.state.matchingFlights
+      }
+    })
+  }
+
+
+
+
 
 
 
@@ -339,6 +386,16 @@ class Search extends Component {
         allUniqueDates,
         dateComponents} = this.state;
 
+
+
+    let flightsRendered = ""
+    if (this.state.matchingFlights.length !== 0) {
+      flightsRendered = <h3>Loading...</h3>
+    }
+
+
+
+
     if (!isLoaded) {
       return(
       <Banner title="Search for Flights below">
@@ -350,73 +407,77 @@ class Search extends Component {
     <Hero>
       <Banner title="Search for Flights below">
 
-        <form onSubmit={this.searchFlights}>
+        <form >
 
-          <span>Departure Airport</span>
-          <select name="search-airports" ref="departure_airport">
-            {departureAirports.map((airport, index) => (
-              <option key={index}>{airport}</option>
-            ))}
-          </select>
 
-          <span>Destination Airport</span>
-          <select name="search-airports" ref="destination_airport">
-            {destinationAirports.map((airport, index) => (
-              <option key={index}>{airport}</option>
-            ))}
-          </select>
+
+          <SelectOption name="Departure Airport"
+                        selectName="search-airports"
+                        selectRef={this.depairRef}
+                        mapName={this.state.departureAirports}
+                        item="airport"   />
+
+          <SelectOption name="Destination Airport"
+                        selectName="search-airports"
+                        selectRef={this.destairRef}
+                        mapName={this.state.destinationAirports}
+                        item="airport"   />
+
 
           <br />
 
-          <span>Departure Date</span>
-          <select name="search-dates" ref="departure_day">
-            {dateComponents.day.map((day, index) => (
-              <option key={index}>{day}</option>
-            ))}
-          </select>
-          <select name="search-dates" ref="departure_month">
-            {dateComponents.month.map((month, index) => (
-              <option key={index}>{month}</option>
-            ))}
-          </select>
-          <select name="search-dates" ref="departure_year">
-            {dateComponents.year.map((year, index) => (
-              <option key={index}>{year}</option>
-            ))}
-          </select>
+            <SelectOption name="Departure Date"
+                          selectName="search-dates"
+                          selectRef={this.depdayRef}
+                          mapName={this.state.dateComponents.day}
+                          item="day"   />
 
-          <span>Return Date</span>
-            <select name="search-dates" ref="return_day">
-              {dateComponents.day.map((day, index) => (
-                <option key={index}>{day}</option>
-              ))}
-            </select>
-            <select name="search-dates" ref="return_month">
-              {dateComponents.month.map((month, index) => (
-                <option key={index}>{month}</option>
-              ))}
-            </select>
-            <select name="search-dates" ref="return_year">
-              {dateComponents.year.map((year, index) => (
-                <option key={index}>{year}</option>
-              ))}
-            </select>
+            <SelectOption name=""
+                          selectName="search-dates"
+                          selectRef={this.depmonthRef}
+                          mapName={this.state.dateComponents.month}
+                          item="month"   />
 
-            <button>Search</button>
+            <SelectOption name=""
+                          selectName="search-dates"
+                          selectRef={this.depyearRef}
+                          mapName={this.state.dateComponents.year}
+                          item="year"   />
+
+
+
+            <SelectOption name="Return Date"
+                          selectName="search-dates"
+                          selectRef={this.retdayRef}
+                          mapName={this.state.dateComponents.day}
+                          item="day"   />
+
+            <SelectOption name=""
+                          selectName="search-dates"
+                          selectRef={this.retmonthRef}
+                          mapName={this.state.dateComponents.month}
+                          item="month"   />
+
+            <SelectOption name=""
+                          selectName="search-dates"
+                          selectRef={this.retyearRef}
+                          mapName={this.state.dateComponents.year}
+                          item="year"   />
+
+
+
+
+            <button onClick={this.searchFlights}>Search!</button>
+
+
+
 
           </form>
 
-
-
-
-
-          <Link to="/results" >
-            Search
-          </Link>
-
       </Banner>
 
-      <h3 id="flight"></h3>
+      {flightsRendered}
+
 
 
     </Hero>
@@ -426,3 +487,8 @@ class Search extends Component {
 };
 
 export default Search;
+
+// let renderFlights = ""
+//   this.state.matchingFlights.length !== 0 ?
+//   renderFlights = <RenderFlight flights={this.state.matchingFlights}/> :
+//   renderFlights = <div>No Matching Flights</div>

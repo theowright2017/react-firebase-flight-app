@@ -1,4 +1,19 @@
 .banner {
   background-color: #BBBBBB;
+}
 
+.select-component {
+  display: inline-block;
+}
+
+.matched-flights li {
+  list-style-type: none;
+  padding: 1rem;
+  margin: 1rem;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.matched-flights  span, button {
+  margin-left: 1rem;
 }
