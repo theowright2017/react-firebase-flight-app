@@ -57,7 +57,8 @@ class Search extends Component {
       },
 
       matchingFlights: [],
-      renderFlight: false
+      renderFlight: false,
+      noMatch: ""
 
     }
   }
@@ -346,12 +347,6 @@ class Search extends Component {
       this.renderFlights()
     })
 
-
-
-
-
-  // TODO render matching flight , expand match criteria
-
   }
 
   renderFlights = () => {
@@ -361,12 +356,18 @@ class Search extends Component {
   }
 
   passPropsToResultAndRedirect = () => {
+    if (this.state.matchingFlights.length !== 0) {
     this.props.history.push({
       pathname: "/results",
       state: {
         matched: this.state.matchingFlights
       }
     })
+  } else {
+    this.setState({
+      noMatch: "No Matching Flights, Please Try Again"
+    })
+  }
   }
 
 
@@ -384,7 +385,8 @@ class Search extends Component {
         departureAirports,
         destinationAirports,
         allUniqueDates,
-        dateComponents} = this.state;
+        dateComponents,
+        noMatch} = this.state;
 
 
 
@@ -476,7 +478,7 @@ class Search extends Component {
 
       </Banner>
 
-      {flightsRendered}
+      <h2>{noMatch}</h2>
 
 
 

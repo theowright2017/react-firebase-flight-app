@@ -13,7 +13,7 @@ function MatchingResults (props) {
 
     <ul className="matched-flights">
       {matchedFlights.map(flight => {
-        
+
         let item = {id: flight.id,
                     reservation: flight.reservation,
                     outDepTime: flight.outdeparttime,
@@ -28,12 +28,20 @@ function MatchingResults (props) {
                     outArrDate: flight.outarrivaldate,
                     retDepDate: flight.indepartdate,
                     retArrDate: flight.inarrivaldate,
-                    class: flight.outflightclass,
-                    oneway: flight.oneway}
+                    class: flight.outflightclass
+                    }
+
+        if (flight.oneway === 0) {
+          item.return = "Yes"
+        } else {
+          item.return = "No"
+        }
+
 
 
   return <li key={flight.id}>
             <span><b>Airline:</b> {flight.carrier} | </span>
+            <span><b>Return:</b> {item.return}    | </span>
             <span><b>Departure Date:</b> {flight.outdepartdate} | </span>
             <span><b>Return Date:</b> {flight.indepartdate} | </span>
             <span><b>Price:</b> {flight.originalprice} | </span>
