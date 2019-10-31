@@ -235,7 +235,8 @@ class Results extends Component {
     this.props.history.push({
       pathname: "/buy",
       state: {
-        flightToBook: this.state.moreFlightInfo
+        flightToBook: this.state.moreFlightInfo,
+        allFlights: this.state.matchingFlights
       }
     })
   }

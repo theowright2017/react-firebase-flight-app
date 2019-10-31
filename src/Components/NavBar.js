@@ -11,7 +11,7 @@ class NavBar extends Component {
   render(){
     return(
       <nav className="navbar">
-        <div>
+
           <div>
             <Link to="/">
               <h3>FlightChecker</h3>
@@ -19,7 +19,7 @@ class NavBar extends Component {
 
 
           </div>
-          <ul>
+          <ul className="links">
             <li>
               <Link to="/search">Search</Link>
             </li>
@@ -28,7 +28,7 @@ class NavBar extends Component {
             </li>
 
           </ul>
-        </div>
+
       </nav>
     )
   }

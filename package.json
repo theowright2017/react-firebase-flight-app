@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.4.2",
+    "auth0-lock": "^11.18.1",
+    "cors": "^2.8.5",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-modal": "^3.10.1",
