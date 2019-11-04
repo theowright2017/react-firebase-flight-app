@@ -16,18 +16,18 @@ function MatchingResults (props) {
 
         let item = {id: flight.id,
                     reservation: flight.reservation,
-                    outDepTime: flight.outdeparttime,
-                    outArrTime: flight.outarrivaltime,
-                    returnDepTime: flight.indeparttime,
-                    returnArrTime: flight.inarrivaltime,
-                    depFlightNo: flight.outflightno,
-                    retFlightNo: flight.inflightno,
+                    outdeparttime: flight.outdeparttime,
+                    outarrivaltime: flight.outarrivaltime,
+                    returndeparttime: flight.indeparttime,
+                    returnarrivaltime: flight.inarrivaltime,
+                    outflightno: flight.outflightno,
+                    returnflightno: flight.inflightno,
                     airline: flight.carrier,
                     price: flight.originalprice,
-                    outDepDate: flight.outdepartdate,
-                    outArrDate: flight.outarrivaldate,
-                    retDepDate: flight.indepartdate,
-                    retArrDate: flight.inarrivaldate,
+                    outdepartdate: flight.outdepartdate,
+                    outarrivaldate: flight.outarrivaldate,
+                    returndepartdate: flight.indepartdate,
+                    returnarrivaldate: flight.inarrivaldate,
                     class: flight.outflightclass
                     }
 

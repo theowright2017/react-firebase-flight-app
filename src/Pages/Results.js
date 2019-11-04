@@ -3,6 +3,7 @@ import Banner from '../Components/Banner'
 import MatchingResults from '../Components/MatchingResults'
 
 import Modal from 'react-modal'
+import ModalContent from '../Components/ModalContent'
 
 import SliderRange from '../Components/SliderRange';
 import SortBy from '../Components/SortBy';
@@ -86,10 +87,10 @@ class Results extends Component {
 
 
 
-  afterOpenModal = () => {
-    // references are now sync'd and can be accessed.
-    this.subtitle.style.color = '#f00';
-  }
+  // afterOpenModal = () => {
+  //   // references are now sync'd and can be accessed.
+  //   this.subtitle.style.color = '#f00';
+  // }
 
   closeModal = () => {
     this.setState({modalIsOpen: false});
@@ -264,45 +265,11 @@ class Results extends Component {
         contentLabel="Example Modal"
       >
 
-        <h2 ref={subtitle => this.subtitle = subtitle}>More info</h2>
-        <button onClick={this.closeModal}>close</button>
 
-        <div className="modal-title-container">
-          <h4 className="modal-title">
-            <mark>Airline:</mark> <span>{this.state.moreFlightInfo.airline}</span></h4>
-          <h4 className="modal-title">
-            <mark>Class: </mark> <span>{this.state.moreFlightInfo.class}</span></h4>
-          <h4 className="modal-title">
-            <mark>Price: </mark>
-            <span>{this.state.moreFlightInfo.price}</span></h4>
-          <h4 className="modal-title">
-            <mark>Return: </mark>
-            <span>{this.state.moreFlightInfo.return}</span></h4>
-        </div>
-
-        <div className="modal-container">
-          <div className="modal-departure-left">
-            <h3>Out</h3>
-            <h4>Departure Date: {this.state.moreFlightInfo.outDepDate}</h4>
-            <h4>Arrival Date: {this.state.moreFlightInfo.outArrDate}</h4>
-            <h4>Departure Time: {this.state.moreFlightInfo.outDepTime}</h4>
-            <h4>Arrival Time: {this.state.moreFlightInfo.outArrTime}</h4>
-            <h4>Flight No: {this.state.moreFlightInfo.depFlightNo}</h4>
-          </div>
-
-          <div className={showRightModal} >
-            <h3>Return</h3>
-            <h4>Departure Date: {this.state.moreFlightInfo.retDepDate}</h4>
-            <h4>Arrival Date: {this.state.moreFlightInfo.retArrDate}</h4>
-            <h4>Departure Time: {this.state.moreFlightInfo.returnDepTime}</h4>
-            <h4>Arrival Time: {this.state.moreFlightInfo.returnArrTime}</h4>
-            <h4>Flight No: {this.state.moreFlightInfo.retFlightNo}</h4>
-          </div>
-      </div>
-
-      <div className="modal-choose-wrap">
-          <button className="chooseBtn" onClick={this.passSelectedFlightDetailsToBuyAndRedirect}>Select Option</button>
-      </div>
+      <ModalContent flight={this.state.moreFlightInfo}
+                    pushSelected={this.passSelectedFlightDetailsToBuyAndRedirect}
+                    close={this.closeModal}
+                    rightModal={showRightModal}/>
 
       </Modal>
     }

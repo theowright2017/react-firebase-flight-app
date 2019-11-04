@@ -119,19 +119,20 @@ class BuyID extends Component {
     .child(this.state.flight.id)
     .update({
       'reservation': flight.reservation,
-      'flightNo':  flight.depFlightNo,
+      'outflightNo':  flight.outflightno,
+      'returnflightNo':  flight.returnflightno,
       'airline': flight.airline,
       'class':  flight.class,
       'price':  flight.price,
       'return':  flight.return,
-      'outgoingDepDate':  flight.outDepDate,
-      'outgoingDepTime':  flight.outDepTime,
-      'outgoingArrDate':  flight.outArrDate,
-      'outgoingArrTime':  flight.outArrTime,
-      'returnDepDate':  flight.retDepDate,
-      'returnDepTime':  flight.returnDepTime,
-      'returnArrDate':  flight.retArrDate,
-      'returnArrTime':  flight.returnArrTime,
+      'outdepartdate':  flight.outdepartdate,
+      'outdeparttime':  flight.outdeparttime,
+      'outarrivaldate':  flight.outarrivaldate,
+      'outarrivaltime':  flight.outarrivaltime,
+      'returndepartdate':  flight.returndepartdate,
+      'returndeparttime':  flight.returndeparttime,
+      'returnarrivaldate':  flight.returnarrivaldate,
+      'returnarrivaltime':  flight.returnarrivaltime,
 
     }, () => {
       this.setState({
@@ -155,9 +156,13 @@ class BuyID extends Component {
                       canPay={this.state.canPay}/>
         <h2>{this.state.error}</h2>
       </div>
-    } else {
+    } else if (this.state.flight !== null) {
         paid =
-        <div>saved</div>
+        <div>
+          <h3>Thank You!  Your Flight has been Booked!</h3>
+          <h4>Your reference number is {this.state.flight.id}</h4>
+          <h4>Please click Account to see a record of your upcoming flights</h4>
+        </div>
     }
 
 
