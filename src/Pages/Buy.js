@@ -9,7 +9,7 @@ class Buy extends Component {
 
     this.state = {
       chosenFlight: null,
-      reviewComplete: false
+      uid: null
     }
   }
 
@@ -17,7 +17,8 @@ class Buy extends Component {
   componentDidMount() {
     if (this.props.location.state.flightToBook !== undefined) {
     this.setState({
-      chosenFlight: this.props.location.state.flightToBook
+      chosenFlight: this.props.location.state.flightToBook,
+      uid: this.props.location.state.flightToBook.id
     }, () => {
       console.log(this.state.chosenFlight);
     })
@@ -36,8 +37,11 @@ class Buy extends Component {
   }
 
   proceedToBuy = () => {
-    this.setState({
-      reviewComplete: true
+    this.props.history.push({
+      pathname: `/buy:${this.state.uid}`,
+      state: {
+        flight: this.state.chosenFlight
+      }
     })
 
 
@@ -47,7 +51,7 @@ class Buy extends Component {
   render(){
 
 
-    if (this.state.chosenFlight !== null && this.state.reviewComplete === false){
+    if (this.state.chosenFlight !== null){
 
     return(
       <div>
@@ -71,11 +75,7 @@ class Buy extends Component {
       </div>
     )
 
-  } else if (this.state.chosenFlight !== null && this.state.reviewComplete === true) {
-    
-    return(
-      <div>hello</div>
-    )
+
   } else {
     return (
       <div>Loading...</div>

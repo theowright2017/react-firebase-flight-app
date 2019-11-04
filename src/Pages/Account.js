@@ -8,31 +8,27 @@ import { Auth0Context } from '../react-auth0-spa.js';
 
 
 
-
-
 class Account extends Component {
+  // used in functional component :
+  // const user = useContext(Auth0Context)
+  static contextType = Auth0Context;
+  static defaultProps = {
+      clientID: "zwTGLcqiVpL6HBwXnTmp1y4ERpjUSggI",
+      domain: "dev-muwdmw8b.eu.auth0.com"
+    }
+
   constructor(props) {
     super(props);
 
-    this.state = {
 
-    }
+
   }
 
-  static defaultProps = {
-    clientID: "zwTGLcqiVpL6HBwXnTmp1y4ERpjUSggI",
-    domain: "dev-muwdmw8b.eu.auth0.com"
-  }
-
-  static contextType = Auth0Context;
-  // used in functional component :
-  // const user = useContext(Auth0Context)
 
   componentDidMount() {
 
 
   }
-
 
 
 

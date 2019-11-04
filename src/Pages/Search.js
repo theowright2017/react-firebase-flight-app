@@ -365,12 +365,12 @@ class Search extends Component {
         matched: this.state.matchingFlights
       }
     })
-  } else {
-    this.setState({
-      noMatch: "No Matching Flights, Please Try Again"
-    })
-  }
-  }
+    } else {
+      this.setState({
+        noMatch: "No Matching Flights, Please Try Again"
+      })
+    }
+    }
 
 
 
