@@ -10,11 +10,20 @@ import Error from './Pages/Error'
 import {Route, Switch} from 'react-router-dom';
 
 import NavBar from './Components/NavBar';
+import NavBarNew from './Components/NavBarNew';
+import { useAuth0 } from "./react-auth0-spa";
 
 import './App.css';
 
 
 function App() {
+    const { loading } = useAuth0();
+
+    if (loading) {
+  return (
+    <div>Loading...</div>
+  );
+}
   return (
     <div className="App">
 

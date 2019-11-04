@@ -1,14 +1,15 @@
 import React, {Component} from 'react'
 
+
 import {Link} from 'react-router-dom';
+import { useAuth0 } from "../react-auth0-spa";
+import {NavItem} from 'react-bootstrap';
 
-class NavBar extends Component {
-  constructor(props) {
-    super(props);
+const NavBar = () => {
 
-    this.state = {}
-  }
-  render(){
+
+    const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
+
     return(
       <nav className="navbar">
 
@@ -23,15 +24,26 @@ class NavBar extends Component {
             <li>
               <Link to="/search">Search</Link>
             </li>
-            <li>
-              <Link to="/account">Account</Link>
-            </li>
+
+
+                {!isAuthenticated && (
+                <NavItem
+                  onClick={() =>
+                    loginWithRedirect({})
+                  }
+                >
+                  Log in
+                </NavItem>
+              )}
+              {isAuthenticated && <NavItem onClick={() => logout()}>Log out</NavItem>}
+
+
 
           </ul>
 
       </nav>
     )
   }
-};
+
 
 export default NavBar;

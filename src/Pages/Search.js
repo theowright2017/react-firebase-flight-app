@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, useState} from 'react'
 import Hero from '../Components/Hero';
 import Banner from '../Components/Banner';
 
@@ -72,6 +72,8 @@ class Search extends Component {
         flights: allFlights
       })
     })
+
+    console.log();
 
   }
 
