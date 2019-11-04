@@ -5,6 +5,12 @@ import Banner from '../Components/Banner'
 
 import {Link} from 'react-router-dom'
 
+
+
+
+
+
+
 function Home (props) {
   return (
   <Hero>
