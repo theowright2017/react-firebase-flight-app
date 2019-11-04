@@ -24,6 +24,9 @@ const NavBar = () => {
             <li>
               <Link to="/search">Search</Link>
             </li>
+            <li>
+              <Link to="/account">Account</Link>
+            </li>
 
 
                 {!isAuthenticated && (

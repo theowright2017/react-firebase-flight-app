@@ -31,6 +31,10 @@ import * as serviceWorker from "./serviceWorker";
 import { Auth0Provider } from "./react-auth0-spa";
 import config from "./auth_config.json";
 
+// static defaultProps = {
+//   email: this.props
+// }
+
 // A function that routes the user to the right place
 // after login
 const onRedirectCallback = appState => {
