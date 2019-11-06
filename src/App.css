@@ -15,6 +15,9 @@ a {
 .links li a {
   margin: 0 2rem 0 2rem;
 }
+.account_hidden {
+  display: none;
+}
 
 
 .banner {
@@ -72,6 +75,9 @@ a {
   display: flex;
   justify-content: center;
   margin-top: 2rem;
+}
+.select-option-hidden {
+  display: none;
 }
 .chooseBtn {
   font-size: 1rem;

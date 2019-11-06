@@ -1,14 +1,26 @@
-import React, {Component} from 'react'
+import React, {Component, useContext} from 'react'
 
 
 import {Link} from 'react-router-dom';
 import { useAuth0 } from "../react-auth0-spa";
+import { Auth0Context } from '../react-auth0-spa.js';
 import {NavItem} from 'react-bootstrap';
 
 const NavBar = () => {
 
 
     const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
+
+       const user = useContext(Auth0Context);
+
+    let account;
+    if (user.user !== undefined) {
+      account =
+        ""
+    } else {
+      account =
+        "account_hidden"
+    }
 
     return(
       <nav className="navbar">
@@ -24,10 +36,10 @@ const NavBar = () => {
             <li>
               <Link to="/search">Search</Link>
             </li>
-            <li>
+
+            <li className={account}>
               <Link to="/account">Account</Link>
             </li>
-
 
                 {!isAuthenticated && (
                 <NavItem

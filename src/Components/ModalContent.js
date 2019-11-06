@@ -8,15 +8,23 @@ function ModalContent (props) {
 
     <div className="modal-title-container">
       <h4 className="modal-title">
-        <mark>Airline:</mark> <span>{props.flight.airline}</span></h4>
+        <mark>Airline:</mark> <span>{props.flight.carrier}</span></h4>
       <h4 className="modal-title">
-        <mark>Class: </mark> <span>{props.flight.class}</span></h4>
+        <mark>Class: </mark> <span>{props.flight.outflightclass}</span></h4>
       <h4 className="modal-title">
         <mark>Price: </mark>
-        <span>{props.flight.price}</span></h4>
+        <span>{props.flight.originalprice}</span></h4>
       <h4 className="modal-title">
         <mark>Return: </mark>
         <span>{props.flight.return}</span></h4>
+    </div>
+    <div className="modal-title-container">
+      <h4 className="modal-title">
+        <mark>DepartureAirport: </mark>
+        <span>{props.flight.depair}</span></h4>
+      <h4 className="modal-title">
+        <mark>Destination Airport: </mark>
+        <span>{props.flight.destair}</span></h4>
     </div>
 
     <div className="modal-container">
@@ -31,15 +39,15 @@ function ModalContent (props) {
 
       <div className={props.rightModal} >
         <h3>Return</h3>
-        <h4>Departure Date: {props.flight.returndepartdate}</h4>
-        <h4>Arrival Date: {props.flight.returnarrivaldate}</h4>
-        <h4>Departure Time: {props.flight.returndeparttime}</h4>
-        <h4>Arrival Time: {props.flight.returnarrivaltime}</h4>
-        <h4>Flight No: {props.flight.returnflightno}</h4>
+        <h4>Departure Date: {props.flight.indepartdate}</h4>
+        <h4>Arrival Date: {props.flight.inarrivaldate}</h4>
+        <h4>Departure Time: {props.flight.indeparttime}</h4>
+        <h4>Arrival Time: {props.flight.inarrivaltime}</h4>
+        <h4>Flight No: {props.flight.inflightno}</h4>
       </div>
   </div>
 
-  <div className="modal-choose-wrap">
+  <div className={props.buttonClass}>
       <button className="chooseBtn" onClick={props.pushSelected}>Select Option</button>
   </div>
 
