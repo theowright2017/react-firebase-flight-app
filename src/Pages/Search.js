@@ -70,10 +70,12 @@ class Search extends Component {
       let allFlights = snapshot.val().flights
       this.setState({
         flights: allFlights
+      }, () => {
+          console.log(this.state.flights);
       })
     })
 
-    console.log();
+
 
   }
 

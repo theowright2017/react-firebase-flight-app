@@ -124,8 +124,8 @@ class Results extends Component {
   }
 
   filterResults = () => {
-    let obj = {class: this.state.searchClass,
-               price: this.state.searchPrice,
+    let obj = {outflightclass: this.state.searchClass,
+               originalprice: this.state.searchPrice,
                return: this.state.searchReturn}
 
     let results = this.state.matchingFlights;
@@ -134,8 +134,8 @@ class Results extends Component {
 
 
     results.forEach((result) => {
-      if ((result.originalprice <= obj.price || obj.price === 0) &&
-          (result.outflightclass === obj.class || obj.class === "Please choose class" || obj.class === "") &&
+      if ((result.originalprice <= obj.originalprice || obj.originalprice === 0) &&
+          (result.outflightclass === obj.outflightclass || obj.outflightclass === "Please choose class" || obj.outflightclass === "") &&
           (result.oneway === parseInt(obj.return) || obj.return === "")) {
             filtered.push(result)
           }
@@ -269,7 +269,8 @@ class Results extends Component {
       <ModalContent flight={this.state.moreFlightInfo}
                     pushSelected={this.passSelectedFlightDetailsToBuyAndRedirect}
                     close={this.closeModal}
-                    rightModal={showRightModal}/>
+                    rightModal={showRightModal}
+                    buttonClass="modal-choose-wrap"/>
 
       </Modal>
     }

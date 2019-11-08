@@ -55,6 +55,7 @@ class BuyID extends Component {
     this.setState({
       flight: this.props.location.state.flight
     })
+    // console.log(this.context.user);
   }
 
   setCardDetailstFromFirebase = (value) => {
@@ -119,20 +120,23 @@ class BuyID extends Component {
     .child(this.state.flight.id)
     .update({
       'reservation': flight.reservation,
-      'outflightNo':  flight.outflightno,
-      'returnflightNo':  flight.returnflightno,
-      'airline': flight.airline,
-      'class':  flight.class,
-      'price':  flight.price,
+      'outflightno':  flight.outflightno,
+      'inflightno':  flight.inflightno,
+      'carrier': flight.carrier,
+      'outflightclass':  flight.outflightclass,
+      'originalprice':  flight.originalprice,
       'return':  flight.return,
       'outdepartdate':  flight.outdepartdate,
       'outdeparttime':  flight.outdeparttime,
       'outarrivaldate':  flight.outarrivaldate,
       'outarrivaltime':  flight.outarrivaltime,
-      'returndepartdate':  flight.returndepartdate,
-      'returndeparttime':  flight.returndeparttime,
-      'returnarrivaldate':  flight.returnarrivaldate,
-      'returnarrivaltime':  flight.returnarrivaltime,
+      'indepartdate':  flight.indepartdate,
+      'indeparttime':  flight.indeparttime,
+      'inarrivaldate':  flight.inarrivaldate,
+      'inarrivaltime':  flight.inarrivaltime,
+      'id': flight.id,
+      'depair': flight.depair,
+      'destair': flight.destair
 
     }, () => {
       this.setState({
@@ -147,16 +151,22 @@ class BuyID extends Component {
   render(){
 
     let paid;
+
+
     if (this.state.flight !== null && this.state.paymentCorrect === false) {
+
       paid =
       <div>
-        <h4>Total Cost for your flight is {this.state.flight.price}</h4>
+        <h4>Total Cost for your flight is {this.state.flight.originalprice}</h4>
         <PaymentInput payWithCard={this.payWithCard}
                       setCardDetailstFromFirebase={this.setCardDetailstFromFirebase}
                       canPay={this.state.canPay}/>
         <h2>{this.state.error}</h2>
       </div>
+
+
     } else if (this.state.flight !== null) {
+
         paid =
         <div>
           <h3>Thank You!  Your Flight has been Booked!</h3>
@@ -167,7 +177,7 @@ class BuyID extends Component {
 
 
 
-    if (this.state.flight !== null) {
+    if (this.state.flight !== null && this.context.user !== undefined) {
 
     return(
       <div>
@@ -179,7 +189,20 @@ class BuyID extends Component {
 
       </div>
     )
-  } else {
+  // }
+  }
+
+  else if (this.context.user === undefined) {
+    return(
+      <div>
+        <Banner title="Please log in before purchasing your flight!"
+               >
+        </Banner >
+      </div>
+    )
+  }
+
+   else {
     return (
       <div>Loading....</div>
     )
