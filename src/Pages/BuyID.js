@@ -7,15 +7,7 @@ import { Auth0Context } from '../react-auth0-spa.js';
 
 let firebase = require('firebase');
 
-var config = {
-  apiKey: "AIzaSyA5nE2t2SY6yHWrL0iduAg70awkOxRFr4g",
-  authDomain: "newflights-32f5e.firebaseapp.com",
-  databaseURL: "https://newflights-32f5e.firebaseio.com",
-  projectId: "newflights-32f5e",
-  storageBucket: "newflights-32f5e.appspot.com",
-  messagingSenderId: "212819191910",
-  appId: "1:212819191910:web:a96fe6557b48480efb25a7"
-};
+
 
 
 class BuyID extends Component {
@@ -79,8 +71,6 @@ class BuyID extends Component {
         threeDigits: e.target.threedigits.defaultValue
       }
     }, () => {
-      console.log(this.state.inputCardInfo);
-      console.log(this.state.correctCardInfo);
 
       this.comparePaymentInfo()
       this.saveFlightToFirebase()

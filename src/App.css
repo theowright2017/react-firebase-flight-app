@@ -85,7 +85,10 @@ a {
 
 
 
-
+/* search */
+.tickboxes {
+  display: inline-block;
+}
 
 
 
