@@ -1,14 +1,14 @@
-import React, {Component, useState} from 'react'
+import React, {Component} from 'react'
 import Hero from '../Components/Hero';
 import Banner from '../Components/Banner';
 
-import {Link} from 'react-router-dom';
 
 import SelectOption from '../Components/SelectOption';
-import RenderFlight from '../Components/RenderFlight';
+
 
 
 let firebase = require('firebase');
+
 
 
   var config = {
@@ -58,7 +58,11 @@ class Search extends Component {
 
       matchingFlights: [],
       renderFlight: false,
-      noMatch: ""
+      noMatch: "",
+
+      checked: false,
+      monthChecked: false
+
 
     }
   }
@@ -70,8 +74,6 @@ class Search extends Component {
       let allFlights = snapshot.val().flights
       this.setState({
         flights: allFlights
-      }, () => {
-          console.log(this.state.flights);
       })
     })
 
@@ -227,6 +229,8 @@ class Search extends Component {
         case '12':
               date.splice(1,1,"Dec")
               break;
+        default:
+          console.log("switch error");
       }
 
       months.push(date[1])
@@ -248,7 +252,6 @@ class Search extends Component {
 
   searchFlights = (e) => {
     e.preventDefault()
-    console.log("now");
 
     const flights = this.state.flights
 
@@ -262,7 +265,7 @@ class Search extends Component {
       returnMonth:         this.retmonthRef.current.value,
       returnYear:          this.retyearRef.current.value
     }
-    console.log(inputFlight);
+
 
 
     //convert date back to database date match
@@ -321,24 +324,45 @@ class Search extends Component {
             numericalDepMonth = "12"
             numericalRetMonth = "12"
             break;
+            default:
+              console.log("switch error");
     }
-
-    let newDepartureDate = this.depyearRef.current.value + "-" +
-                           numericalDepMonth + "-" +
-                           this.depdayRef.current.value
-    let newReturnDate = this.retyearRef.current.value + "-" +
-                           numericalRetMonth + "-" +
-                           this.retdayRef.current.value
     // end of date conversion
 
-    let matchingFlightsArray = []
 
+    inputFlight.departureDate = `${inputFlight.departureYear}-${numericalDepMonth}-${inputFlight.departureDay}`
+
+    inputFlight.returnDate = `${inputFlight.returnYear}-${numericalRetMonth}-${inputFlight.returnDay}`
+
+
+    let matchingFlightsArray = []
     flights.forEach((flight) => {
-      if ( inputFlight.departureAirport === flight.depair &&
-           inputFlight.destinationAirport === flight.destair) {
-        matchingFlightsArray.push(flight)
-      }
+    //   if (  flights.length <= 150 &&
+    //         inputFlight.departureAirport === flight.depair &&
+    //         inputFlight.destinationAirport === flight.destair) {
+    //
+    //            matchingFlightsArray.push(flight)
+    //
+    //   }
+    //   else
+      if (flights.length < 150 && this.state.checked === true &&
+            inputFlight.departureAirport === flight.depair &&
+            inputFlight.destinationAirport === flight.destair &&
+            inputFlight.departureDate === flight.outdepartdate &&
+            inputFlight.returnDate === flight.indepartdate) {
+
+              matchingFlightsArray.push(flight)
+            }
+      else if (flights.length < 150 && this.state.checked === false &&
+               inputFlight.departureAirport === flight.depair &&
+               inputFlight.destinationAirport === flight.destair &&
+               inputFlight.departureDate === flight.outdepartdate) {
+
+                 matchingFlightsArray.push(flight)
+               }
       })
+
+
 
 
     this.setState({
@@ -353,11 +377,15 @@ class Search extends Component {
 
   }
 
+  //////////////////////////////////
+
   renderFlights = () => {
     this.setState({
       renderFlight: true
     })
   }
+
+    //////////////////////////////////
 
   passPropsToResultAndRedirect = () => {
     if (this.state.matchingFlights.length !== 0) {
@@ -375,6 +403,19 @@ class Search extends Component {
     }
 
 
+    handleCheckBox = (event) => {
+      this.setState({
+        checked: !this.state.checked
+      })
+    }
+
+    handleMonthSearch = () => {
+      this.setState({
+        monthChecked: !this.state.monthChecked
+      })
+    }
+
+
 
 
 
@@ -385,19 +426,22 @@ class Search extends Component {
 
   render(){
     let {isLoaded,
-        allAirports,
         departureAirports,
         destinationAirports,
-        allUniqueDates,
         dateComponents,
-        noMatch} = this.state;
+        noMatch,
+        checked,
+        monthChecked} = this.state;
 
+    let disabled;
+      if (this.state.checked === false) {
+        disabled = "disabled"
+      }
 
-
-    let flightsRendered = ""
-    if (this.state.matchingFlights.length !== 0) {
-      flightsRendered = <h3>Loading...</h3>
-    }
+    let monthOnly;
+      if (this.state.monthChecked === true) {
+        monthOnly = "disabled"
+      }
 
 
 
@@ -420,14 +464,25 @@ class Search extends Component {
           <SelectOption name="Departure Airport"
                         selectName="search-airports"
                         selectRef={this.depairRef}
-                        mapName={this.state.departureAirports}
-                        item="airport"   />
+                        mapName={departureAirports}
+                        item="airport"
+                        />
 
           <SelectOption name="Destination Airport"
                         selectName="search-airports"
                         selectRef={this.destairRef}
-                        mapName={this.state.destinationAirports}
+                        mapName={destinationAirports}
                         item="airport"   />
+
+                      <div className="tickboxes">
+                        <input type="checkbox" onChange={this.handleCheckBox} id="return" name="return" checked={checked}/>
+                          <label htmlFor="return">return</label>
+                      </div>
+
+                      <div className="tickboxes">
+                        <input type="checkbox" onChange={this.handleMonthSearch} id="months" name="months" checked={monthChecked}/>
+                          <label htmlFor="months">search whole month</label>
+                      </div>
 
 
           <br />
@@ -435,40 +490,46 @@ class Search extends Component {
             <SelectOption name="Departure Date"
                           selectName="search-dates"
                           selectRef={this.depdayRef}
-                          mapName={this.state.dateComponents.day}
-                          item="day"   />
+                          mapName={dateComponents.day}
+                          item="day"
+                          disabled={monthOnly}   />
 
             <SelectOption name=""
                           selectName="search-dates"
                           selectRef={this.depmonthRef}
-                          mapName={this.state.dateComponents.month}
-                          item="month"   />
+                          mapName={dateComponents.month}
+                          item="month"
+                          />
 
             <SelectOption name=""
                           selectName="search-dates"
                           selectRef={this.depyearRef}
-                          mapName={this.state.dateComponents.year}
-                          item="year"   />
+                          mapName={dateComponents.year}
+                          item="year"
+                          disabled={monthOnly}/>
 
 
 
             <SelectOption name="Return Date"
                           selectName="search-dates"
                           selectRef={this.retdayRef}
-                          mapName={this.state.dateComponents.day}
-                          item="day"   />
+                          mapName={dateComponents.day}
+                          item="day"
+                          disabled={disabled, monthOnly}   />
 
             <SelectOption name=""
                           selectName="search-dates"
                           selectRef={this.retmonthRef}
-                          mapName={this.state.dateComponents.month}
-                          item="month"   />
+                          mapName={dateComponents.month}
+                          item="month"
+                          disabled={disabled}  />
 
             <SelectOption name=""
                           selectName="search-dates"
                           selectRef={this.retyearRef}
-                          mapName={this.state.dateComponents.year}
-                          item="year"   />
+                          mapName={dateComponents.year}
+                          item="year"
+                          disabled={disabled}  />
 
 
 
@@ -493,8 +554,3 @@ class Search extends Component {
 };
 
 export default Search;
-
-// let renderFlights = ""
-//   this.state.matchingFlights.length !== 0 ?
-//   renderFlights = <RenderFlight flights={this.state.matchingFlights}/> :
-//   renderFlights = <div>No Matching Flights</div>

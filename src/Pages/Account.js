@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import Banner from '../Components/Banner'
 import MatchingResults from '../Components/MatchingResults'
 
-import  {NavItem}  from 'react-bootstrap';
 
 import { Auth0Context } from '../react-auth0-spa.js';
 
@@ -27,15 +26,7 @@ Modal.setAppElement('#root')
 let firebase = require('firebase');
 
 
-  var config = {
-    apiKey: "AIzaSyA5nE2t2SY6yHWrL0iduAg70awkOxRFr4g",
-    authDomain: "newflights-32f5e.firebaseapp.com",
-    databaseURL: "https://newflights-32f5e.firebaseio.com",
-    projectId: "newflights-32f5e",
-    storageBucket: "newflights-32f5e.appspot.com",
-    messagingSenderId: "212819191910",
-    appId: "1:212819191910:web:a96fe6557b48480efb25a7"
-  };
+
 
 
 
@@ -68,17 +59,19 @@ class Account extends Component {
 
   componentDidMount() {
     let bookedFlights = firebase.database().ref('savedFlights').child(this.context.user.nickname)
+    let flights;
+
     bookedFlights.on('value', snapshot => {
-      let flights = Object.values(snapshot.val().flights)
+      if (snapshot.val() !== null){
+       flights = Object.values(snapshot.val().flights)
 
-      this.setState({
-        bookedFlights: flights,
-        dbFlights: flights
-      }, () => {
-        console.log(this.state.bookedFlights);
-      })
-
+        this.setState({
+          bookedFlights: flights,
+          dbFlights: flights
+        })
+      }
     })
+
   }
 
   handleModalAndMoreInfoState = (item) => (event) => {
@@ -206,7 +199,16 @@ class Account extends Component {
 
         </div>
       )
-    } else {
+    } else if (bookedFlights === null ) {
+      return(
+      <Banner title="You do not have any booked flights at the moment" >
+
+      </Banner>
+    )
+    }
+
+
+    else {
       return (
         <div>Loading...</div>
       )

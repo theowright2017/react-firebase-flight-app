@@ -10,16 +10,13 @@ class Radio extends Component {
   }
 
   handleChange = (e) => {
-    // this.setState({
-    //   selection: e.target.value
-    // })
+
     this.props.passprops(e)
   }
 
 
   render(){
 
-    let { resetclick, radioReturn } = this.props;
     return(
 
       <div>

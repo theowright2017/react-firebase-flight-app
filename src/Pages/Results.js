@@ -6,7 +6,7 @@ import Modal from 'react-modal'
 import ModalContent from '../Components/ModalContent'
 
 import SliderRange from '../Components/SliderRange';
-import SortBy from '../Components/SortBy';
+
 
 const customStyles = {
   content : {
@@ -59,7 +59,6 @@ class Results extends Component {
 
   componentDidMount() {
     if (this.props.location.state !== undefined){
-    console.log(this.props.location.state.matched)
     this.setState({
       matchingFlights: this.props.location.state.matched
     })
@@ -87,11 +86,6 @@ class Results extends Component {
 
 
 
-  // afterOpenModal = () => {
-  //   // references are now sync'd and can be accessed.
-  //   this.subtitle.style.color = '#f00';
-  // }
-
   closeModal = () => {
     this.setState({modalIsOpen: false});
   }
@@ -113,7 +107,6 @@ class Results extends Component {
     }
     )
     this.setState({modalIsOpen: true});
-    console.log(item);
   }
 
   updateRange = (value) => {
@@ -141,7 +134,6 @@ class Results extends Component {
           }
 
     })
-    console.log(filtered);
     filtered.sort((a, b) => {
       return a.originalprice - b.originalprice
     })
@@ -220,7 +212,7 @@ class Results extends Component {
           filterWrap: "filter-wrapper",
           filterBtn: "filter-btn-hidden"
         })
-        console.log(this.state);
+
 
       } else if (this.state.showFilter === false) {
         this.setState({
@@ -255,7 +247,7 @@ class Results extends Component {
 
 
     let modal = ""
-      if (this.state.moreFlightInfo !== null ) {
+      if (moreFlightInfo !== null ) {
       modal =
       <Modal
         isOpen={this.state.modalIsOpen}
@@ -266,7 +258,7 @@ class Results extends Component {
       >
 
 
-      <ModalContent flight={this.state.moreFlightInfo}
+      <ModalContent flight={moreFlightInfo}
                     pushSelected={this.passSelectedFlightDetailsToBuyAndRedirect}
                     close={this.closeModal}
                     rightModal={showRightModal}
@@ -309,7 +301,7 @@ class Results extends Component {
           <button className={filterBtn} onClick={this.showFilterOptions}>filter results</button>
         </div>
 
-          <MatchingResults flights={this.state.matchingFlights}
+          <MatchingResults flights={matchedFlights}
                            onClick={this.handleModalAndMoreInfoState}/>
         <hr />
 

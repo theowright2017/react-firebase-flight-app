@@ -15,12 +15,10 @@ class SliderRange extends Component {
   updateRange = (event) => {
     event.preventDefault();
     this.props.updateRange(event.target.value);
-    console.log(event.target);
   }
 
   passprops = (e) => {
     e.preventDefault()
-    console.log(e.target.value);
     this.props.radioReturn(e)
   }
 
@@ -33,7 +31,7 @@ class SliderRange extends Component {
 
   render(){
 
-    const {range, search, priceRef, submitPrice,resetClick, classes, radioReturn} = this.props;
+    const {range, priceRef, submitPrice,resetClick, classes } = this.props;
 
 
     return(

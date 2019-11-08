@@ -19,8 +19,6 @@ class Buy extends Component {
     this.setState({
       chosenFlight: this.props.location.state.flightToBook,
       uid: this.props.location.state.flightToBook.id
-    }, () => {
-      console.log(this.state.chosenFlight);
     })
   }
   }
