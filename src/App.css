@@ -1,6 +1,12 @@
 a {
   text-decoration: none;
 }
+p {
+  margin: 0;
+}
+.hint {
+  margin-bottom: 1rem;
+}
 
 .navbar {
   display: flex;
@@ -26,6 +32,10 @@ a {
 
 .select-component {
   display: inline-block;
+}
+
+.select-component.hidden {
+  display: none;
 }
 
 .matched-flights li {
@@ -88,6 +98,9 @@ a {
 /* search */
 .tickboxes {
   display: inline-block;
+}
+.select-component-hidden {
+  display: none;
 }
 
 

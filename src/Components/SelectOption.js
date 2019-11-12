@@ -12,7 +12,7 @@ render() {
 
 
     return(
-      <div className="select-component">
+      <div className={this.props.className}>
       <span>{name}</span>
       <select name={selectName} ref={selectRef} disabled={this.props.disabled}>
         {mapName.map((item, index) => (
