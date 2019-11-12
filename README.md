@@ -1,3 +1,24 @@
+https://newflights-32f5e.web.app/
+
+This is a functional web app I have recently built with the main intention to refresh and build on my previous React knowledge.  
+
+I found this process really beneficial and feel as though I learned a lot from it.  I took a few points I had learned in previous online courses, e.g authorisation, and implemented them into this project, as I felt they were relevant and added value.
+
+I also learned how to utilise React Context API, and was able to use React Hooks as a result of how the authorisation is built.
+
+The main features of the project itself: 
+  - sign yourself up for an individual account 
+  - search flights for specific dates and locations
+  - review selected flight, choose whether to proceed or not
+  - purchase flight using card details (defaulted just to show process)
+  - persist booked flight details to database, relevant to each individual user
+  - log into account and access list of booked flights relevant to your account
+
+
+
+________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
