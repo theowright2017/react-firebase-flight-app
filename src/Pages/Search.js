@@ -61,7 +61,11 @@ class Search extends Component {
       noMatch: "",
 
       checked: false,
-      monthChecked: false
+      monthChecked: false,
+      returnNormal: "select-component",
+      returnHidden: "select-component-hidden",
+
+      select: false
 
 
     }
@@ -332,20 +336,29 @@ class Search extends Component {
 
     inputFlight.departureDate = `${inputFlight.departureYear}-${numericalDepMonth}-${inputFlight.departureDay}`
 
-    inputFlight.returnDate = `${inputFlight.returnYear}-${numericalRetMonth}-${inputFlight.returnDay}`
+
+      inputFlight.returnDate = `${inputFlight.returnYear}-${numericalRetMonth}-${inputFlight.returnDay}`
+
 
 
     let matchingFlightsArray = []
+    let month;
+
+     month = inputFlight.returnDate.split('-')[1]
+
+
     flights.forEach((flight) => {
-    //   if (  flights.length <= 150 &&
-    //         inputFlight.departureAirport === flight.depair &&
-    //         inputFlight.destinationAirport === flight.destair) {
-    //
-    //            matchingFlightsArray.push(flight)
-    //
-    //   }
-    //   else
-      if (flights.length < 150 && this.state.checked === true &&
+      if (  flights.length <= 150 &&
+            inputFlight.departureAirport === flight.depair &&
+            inputFlight.destinationAirport === flight.destair) {
+
+               matchingFlightsArray.push(flight)
+
+      }
+      else
+            // if return flight is checked
+      if (flights.length > 150 && this.state.checked === true &&
+           this.state.monthChecked === false &&
             inputFlight.departureAirport === flight.depair &&
             inputFlight.destinationAirport === flight.destair &&
             inputFlight.departureDate === flight.outdepartdate &&
@@ -353,14 +366,39 @@ class Search extends Component {
 
               matchingFlightsArray.push(flight)
             }
-      else if (flights.length < 150 && this.state.checked === false &&
+            // if return flight unchecked
+      else if (flights.length > 150 && this.state.checked === false &&
+               this.state.monthChecked === false &&
                inputFlight.departureAirport === flight.depair &&
                inputFlight.destinationAirport === flight.destair &&
-               inputFlight.departureDate === flight.outdepartdate) {
+               inputFlight.departureDate === flight.outdepartdate &&
+               flight.indepartdate === "") {
 
                  matchingFlightsArray.push(flight)
+            }
+            // if month only no return is checked
+      else if (flights.length > 150 && this.state.monthChecked === true &&
+               month === numericalRetMonth && this.state.checked === false &&
+               inputFlight.departureAirport === flight.depair &&
+               flight.indepartdate === "" ) {
+
+                    matchingFlightsArray.push(flight)
+               }
+            //month only and return checked
+      else if (flights.length > 150 && this.state.monthChecked === true &&
+               month === numericalRetMonth && this.state.checked === true &&
+               inputFlight.departureAirport === flight.depair &&
+               inputFlight.destinationAirport === flight.destair &&
+               flight.indepartdate !== ""
+               ) {
+
+                   matchingFlightsArray.push(flight)
                }
       })
+
+      if ( month === numericalRetMonth){
+        console.log(true);
+      }
 
 
 
@@ -411,7 +449,9 @@ class Search extends Component {
 
     handleMonthSearch = () => {
       this.setState({
-        monthChecked: !this.state.monthChecked
+        monthChecked: !this.state.monthChecked,
+        select: !this.state.select
+
       })
     }
 
@@ -431,7 +471,8 @@ class Search extends Component {
         dateComponents,
         noMatch,
         checked,
-        monthChecked} = this.state;
+        monthChecked,
+        select} = this.state;
 
     let disabled;
       if (this.state.checked === false) {
@@ -457,6 +498,14 @@ class Search extends Component {
     <Hero>
       <Banner title="Search for Flights below">
 
+        <br />
+
+      <div className="hint">
+        <p>Popular Destinations: LGW to LAS</p>
+        <p>Popular Dates: Dep 01/Jan  Return 20/Jan</p>
+        <p>Or just search whole month</p>
+      </div>
+
         <form >
 
 
@@ -466,13 +515,15 @@ class Search extends Component {
                         selectRef={this.depairRef}
                         mapName={departureAirports}
                         item="airport"
+                        className="select-component"
                         />
 
           <SelectOption name="Destination Airport"
                         selectName="search-airports"
                         selectRef={this.destairRef}
                         mapName={destinationAirports}
-                        item="airport"   />
+                        item="airport"
+                        className="select-component"/>
 
                       <div className="tickboxes">
                         <input type="checkbox" onChange={this.handleCheckBox} id="return" name="return" checked={checked}/>
@@ -492,13 +543,15 @@ class Search extends Component {
                           selectRef={this.depdayRef}
                           mapName={dateComponents.day}
                           item="day"
-                          disabled={monthOnly}   />
+                          disabled={monthOnly}
+                          className="select-component"/>
 
             <SelectOption name=""
                           selectName="search-dates"
                           selectRef={this.depmonthRef}
                           mapName={dateComponents.month}
                           item="month"
+                          className="select-component"
                           />
 
             <SelectOption name=""
@@ -506,30 +559,48 @@ class Search extends Component {
                           selectRef={this.depyearRef}
                           mapName={dateComponents.year}
                           item="year"
-                          disabled={monthOnly}/>
+                          disabled={monthOnly}
+                          className="select-component"/>
 
 
 
-            <SelectOption name="Return Date"
+                        <SelectOption name="Return Date"
                           selectName="search-dates"
                           selectRef={this.retdayRef}
                           mapName={dateComponents.day}
                           item="day"
-                          disabled={disabled, monthOnly}   />
+                          disabled="disabled"
+                          className={monthChecked ? "select-component" : "select-component-hidden"}/>
+                        <SelectOption name="Return Date"
+                          selectName="search-dates"
+                          selectRef={this.retdayRef}
+                          mapName={dateComponents.day}
+                          item="day"
+                          disabled={disabled}
+                          className={monthChecked ? "select-component-hidden" : "select-component"}/>
 
             <SelectOption name=""
                           selectName="search-dates"
                           selectRef={this.retmonthRef}
                           mapName={dateComponents.month}
                           item="month"
-                          disabled={disabled}  />
+                          disabled={disabled}
+                          className="select-component"/>
 
-            <SelectOption name=""
+                        <SelectOption name="" className="return-date"
                           selectName="search-dates"
                           selectRef={this.retyearRef}
                           mapName={dateComponents.year}
                           item="year"
-                          disabled={disabled}  />
+                          disabled="disabled"
+                          className={monthChecked ? "select-component" : "select-component-hidden"}/>
+                        <SelectOption name="" className="return-date"
+                          selectName="search-dates"
+                          selectRef={this.retyearRef}
+                          mapName={dateComponents.year}
+                          item="year"
+                          disabled={disabled}
+                          className={monthChecked ? "select-component-hidden" : "select-component"}/>
 
 
 
