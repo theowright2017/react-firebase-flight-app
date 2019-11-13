@@ -20,6 +20,11 @@ import './App.css';
 function App() {
     const { loading } = useAuth0();
 
+    // componentDidMount = () => {
+    //   setTimeout(alert("Please clear your browsers cookies to continue"), 1000)
+    // }
+
+
     if (loading) {
   return (
     <div>Loading...</div>
