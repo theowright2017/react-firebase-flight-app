@@ -1,4 +1,4 @@
-https://newflights-32f5e.web.app/
+https://newflights-32f5e.firebaseapp.com/
 
 This is a functional web app I have recently built with the main intention to refresh and build on my previous React knowledge.  
 
